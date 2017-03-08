@@ -1,0 +1,1955 @@
+<?xml version="1.0"?>
+<!-- RateLaw Definition File -->
+<rateml xmlns="http://www.sys-bio.org/rateml" formatVersion="2.0" date="" databaseTimeStamp="2012-07-15T17:19:29.370-08:00">
+  <declarations>
+    <reservedSymbol value="___"/>
+    <validReactantName name="S"/>
+    <validProductName name="P"/>
+    <validInhibitorName name="I"/>
+    <validActivatorName name="A"/>
+    <validModifierName name="M"/>
+    <listOfValidFunctionNames>
+      <function name="ln"/>
+      <function name="log"/>
+      <function name="sin"/>
+      <function name="cos"/>
+      <function name="tan"/>
+      <function name="exp"/>
+      <function name="sqr"/>
+      <function name="sqrt"/>
+      <function name="fact"/>
+      <function name="arcsin"/>
+      <function name="arccos"/>
+      <function name="arctan"/>
+      <function name="sinh"/>
+      <function name="cosh"/>
+      <function name="tanh"/>
+      <function name="arcsinh"/>
+      <function name="arccosh"/>
+      <function name="arccanh"/>
+      <function name="abs"/>
+      <function name="pow"/>
+      <function name="delay"/>
+      <function name="piecewise"/>
+      <function name="eq"/>
+      <function name="gt"/>
+      <function name="lt"/>
+      <function name="geq"/>
+      <function name="lte"/>
+      <function name="neq"/>
+      <function name="ceiling"/>
+      <function name="floor"/>
+      <function name="and"/>
+      <function name="or"/>
+      <function name="not"/>
+      <function name="xor"/>
+      <function name="root"/>
+      <function name="sec"/>
+      <function name="csc"/>
+      <function name="cot"/>
+      <function name="sech"/>
+      <function name="csch"/>
+      <function name="coth"/>
+      <function name="arcsec"/>
+      <function name="arccsc"/>
+      <function name="arccot"/>
+      <function name="arcsech"/>
+      <function name="arccsch"/>
+      <function name="arccoth"/>
+    </listOfValidFunctionNames>
+    <listOfProperties>
+      <property name="Simple"/>
+      <property name="Linear"/>
+      <property name="Reversible"/>
+      <property name="Irreversible"/>
+      <property name="Mass-action"/>
+      <property name="Hyperbolic"/>
+      <property name="Sigmoidal"/>
+      <property name="Allosteric"/>
+      <property name="Inhibited"/>
+      <property name="Activated"/>
+      <property name="Regulated"/>
+    </listOfProperties>
+  </declarations>
+  <listOfRateLaws>
+    <!-- Rules for Equations -->
+    <!-- The reserved symbol is used to delineate species names -->
+    <!-- Reactants, product, inhibitors, activators and modifiers -->
+    <!-- must begin with the letter indicated in the list of validXXName tags, -->
+    <!-- see top of file. In general they will have the BNF form: -->
+    <!-- species ::= <reservedSymbol> <validName> <integer> <reservedSymbol> -->
+    <!-- Any other kind of symbol is assumed to be a parameter -->
+    <!-- eg: Vmax*___S1___/(Km1*(1 + ___I1___/Ki) + ___S1___) -->
+    <!-- The display attribute should ba a LaTeX string of the rate law -->
+    <!-- eg: v = V_m \displaystyle\frac{S}{K_m + S} -->
+    <law id="constant" SBOTerm="SBO:0000000" displayName="Constant Rate" property="Simple,Irreversible" description="This rate laws supplies a constant rate independent of any species molecular concentration." numSubstrates="1" numProducts="1" infixExpression="vo" display="v = v_o" helpFile="help\p1.html">
+      <listOfParameters>
+        <parameter name="vo" description="The constant rate"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <ci> vo </ci>
+      </math>
+    </law>
+    <law id="linear" SBOTerm="SBO:0000000" displayName="Linearized Rate Law" property="Simple,Reversible,Linear" description="Single substrate linearized rate law. $g$ in the rate law is the unscaled elasticity, $dv/ds_o$." numSubstrates="1" numProducts="1" infixExpression="vo+g*(___S1___-so)" display="v = v_o + g (S_1-s_o)" helpFile="help\p2.html">
+      <listOfParameters>
+        <parameter name="vo" description="The reaction rate at the operating point, so"/>
+        <parameter name="g" description="Technically dv/dso. The gradient"/>
+        <parameter name="so" description="The operating point at which the orginal equation was linearized"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <plus/>
+          <ci> vo </ci>
+          <apply>
+            <times/>
+            <ci> g </ci>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <ci> so </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="imm" SBOTerm="SBO:0000049" displayName="Irreversible Mass-Action" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action" numSubstrates="1" numProducts="1" infixExpression="k*___S1___" display="v = k S" helpFile="help\p3.html">
+      <listOfParameters>
+        <parameter name="k" description="Rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmm" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action" numSubstrates="1" numProducts="1" infixExpression="k1*___S1___-k2*___P1___" display="v = k_1 S - k_2 P" helpFile="help\p4.html">
+      <listOfParameters>
+        <parameter name="k1" description="Reverse rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rmodmm" SBOTerm="SBO:0000000" displayName="Modified Reversible Mass-Action" property="Reversible,Mass-action,Linear" description="Modified Reversible Mass-Action" numSubstrates="1" numProducts="1" infixExpression="k1*___S1___^n*(1-Gamma/Keq)" display="v = k_1 S^n \left(1-\displaystyle\frac{\Gamma}{K_{eq}}\right)" helpFile="help\p5.html">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="n" description="A Hill coefficient like parameter"/>
+        <parameter name="Gamma" description="Mass-action ratio, $\Gamma = \rho/K_{eq}$"/>
+        <parameter name="Keq" description="Thermodynamic equilibrium constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k1 </ci>
+          <apply>
+            <power/>
+            <ci> ___S1___ </ci>
+            <ci> n </ci>
+          </apply>
+          <apply>
+            <minus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> Gamma </ci>
+              <ci> Keq </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="imme" SBOTerm="SBO:0000000" displayName="Irreversible Michaelis-Menten" property="Irreversible,Hyperbolic" description="Irreversible Michaelis-Menten" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/(Km1 + ___S1___)" display="v = V_m \displaystyle\frac{S}{K_m + S}" helpFile="help\p6.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km1" description="Substrate Michaelis constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <plus/>
+            <ci> Km1 </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immep" SBOTerm="SBO:0000000" displayName="Simple Enzyme Product Inhibition" property="Irreversible,Hyperbolic,Regulated,Inhibited" description="Irreversible Michaelis-Menten with Product Inhibition" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/(Km1*(1+___P1___/Ki)+___S1___)" display="v = V_m \displaystyle\frac{S}{K_m \left(1 + \displaystyle\frac{P}{K_i}\right) + S}" helpFile="help\p7.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km1" description="Michaelis constant"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci> Km1 </ci>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Ki </ci>
+                </apply>
+              </apply>
+            </apply>
+            <ci> ___S1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immec" SBOTerm="SBO:0000000" 
+    	   displayName="Competitive Inhibitor" 
+    	   property="Irreversible,Hyperbolic,Regulated,Inhibited" description="Michaelis-Menten with Competitive Inhibition" 
+    	   numSubstrates="1" numProducts="1" 
+    	   infixExpression="Vmax*___S1___/(Km1*(1+___I1___/Ki)+___S1___)" 
+    	   display="v = V_m \displaystyle\frac{S}{K_m \left(1 + \frac{I}{K_i}\right) + S}" helpFile="help\p8.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km1" description="Michaelis constant"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci> Km1 </ci>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___I1___ </ci>
+                  <ci> Ki </ci>
+                </apply>
+              </apply>
+            </apply>
+            <ci> ___S1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immen" SBOTerm="SBO:0000000" displayName="Non-Competitive Inhibition" property="Irreversible,Hyperbolic,Regulated" description="Michaelis-Menten with Non-Competitive Inhibition" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/((1+___I1___/Ki)*(Km+___S1___))" display="v = \displaystyle {V_{max} \frac{S_1}{\left(1 + \frac{I_1}{K_i}\right) \Big(K_m + S_1\Big)}}" helpFile="help\p9.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+        <parameter name="Km" description="Michaelis constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <ci> ___I1___ </ci>
+                <ci> Ki </ci>
+              </apply>
+            </apply>
+            <apply>
+              <plus/>
+              <ci> Km </ci>
+              <ci> ___S1___ </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immeu" SBOTerm="SBO:0000000" displayName=" Uncompetitive Inhibition" property="Irreversible,Hyperbolic,Regulated,Inhibited" description="Michaelis-Menten with Uncompetitive Inhibition" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/((1+___I1___/Ki)*___S1___+Km)" display="v = V_m \displaystyle\frac{S}{\left(1 + \frac{I}{K_i}\right) S + K_m}" helpFile="help\p10.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+        <parameter name="Km" description="Michaelis constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___I1___ </ci>
+                  <ci> Ki </ci>
+                </apply>
+              </apply>
+              <ci> ___S1___ </ci>
+            </apply>
+            <ci> Km </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="uur" SBOTerm="SBO:0000000" displayName="Uni-Uni Reversible Michaelis-Menten" property="Reversible,Hyperbolic,Hyperbolic" description="Uni-Uni Reversible Simple Michaelis-Menten" numSubstrates="1" numProducts="1" infixExpression="(Vf*___S1___/KmS-Vr*___P1___/KmP)/(1+___S1___/KmS+___P1___/KmP)" display="v =\frac{V_f \frac{S}{K_s} - V_r \frac{P}{K_p}}{1 + \frac{S}{K_s} + \frac{P}{K_p}}" helpFile="help\p12.html">
+      <listOfParameters>
+        <parameter name="Vf" description="Forward Maximal rate"/>
+        <parameter name="KmS" description="Substate Michaelis constant"/>
+        <parameter name="Vr" description="Reverse Maximal rate"/>
+        <parameter name="KmP" description="Product Michaelis constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <minus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vf </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> KmS </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vr </ci>
+                <ci> ___P1___ </ci>
+              </apply>
+              <ci> KmP </ci>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> KmS </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P1___ </ci>
+              <ci> KmP </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rmme" SBOTerm="SBO:0000000" displayName="Reversible Haldane Michaelis-Menten" property="Reversible,Hyperbolic" description="Reversible Haldane Modified Michaelis-Menten" numSubstrates="1" numProducts="1" infixExpression="(Vmax/Km1)*(___S1___-___P1___/Keq)/(1+___S1___/Km1+___P1___/Km2)" display="v = \left(\frac{\displaystyle V_m}{\displaystyle K_s}\right)\ \displaystyle\frac{\displaystyle S - \displaystyle\frac{P}{K_{eq}}}{1 + \displaystyle\frac{S}{K_s} + \displaystyle\frac{P}{K_p}}" helpFile="help\p11.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km1" description="Substrate Michaelis constant"/>
+        <parameter name="Keq" description="Thermodynamic equilibrium constant"/>
+        <parameter name="Km2" description="Product Michaelis constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <apply>
+              <divide/>
+              <ci> Vmax </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P1___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="HillKa" SBOTerm="SBO:0000000" displayName="Hill Equation" property="Irreversible,Sigmoidal" description="Hill Equation" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___^h/(K_d+___S1___^h)" display="v = V_m \displaystyle\frac{S^h}{K_m + S^h}" helpFile="help\p13.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="h" description="Hill coefficient"/>
+        <parameter name="K_d" description="Dissociation constante"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <apply>
+              <power/>
+              <ci> ___S1___ </ci>
+              <ci> h </ci>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <ci> K_d </ci>
+            <apply>
+              <power/>
+              <ci> ___S1___ </ci>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="HillKh" SBOTerm="SBO:0000000" displayName="Hill Equation using Half-Maximal Activity" property="Irreversible,Sigmoidal" description="Hill Equation using Half-Maximal Activity" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___^h/(K_H^h+___S1___^h)" display="v = V_m \displaystyle\frac{S^h}{K_H^h + S^h}" helpFile="help\p14.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="h" description="Hill coefficient"/>
+        <parameter name="K_H" description="Half maximal activity constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <apply>
+              <power/>
+              <ci> ___S1___ </ci>
+              <ci> h </ci>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <ci> K_H </ci>
+              <ci> h </ci>
+            </apply>
+            <apply>
+              <power/>
+              <ci> ___S1___ </ci>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="iMWCs" SBOTerm="SBO:0000000" displayName="Simplified Irreversible MWC Model" property="Irreversible,Sigmoidal,Simple" description="Simplified Irreversible MWC Model" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L)" display="v = V_m \frac{S/K_m \left(1 + S/K_m\right)^{n-1}}{\left(1 + S/K_m\right)^n + L}" helpFile="help\p15.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km" description="Michaelis constant"/>
+        <parameter name="n" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vmax </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> Km </ci>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> n </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <ci> n </ci>
+            </apply>
+            <ci> L </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="iMWC" SBOTerm="SBO:0000000" displayName="Irreversible MWC Model" property="Irreversible,Sigmoidal" description="Irreversible MWC Model" numSubstrates="1" numProducts="1" infixExpression="Vmax*((___S1___/Km)*(1+___S1___/Km)^(n-1)+L*c*(___S1___/Km)*(1+c*___S1___/Km)^(n-1))/((1+___S1___/Km)^n+L*(1+c*___S1___/Km)^n)" display="v = V_m \frac{\alpha (1 + \alpha)^{n-1} + L c \alpha (1 + c \alpha)^{n-1}}{(1 + \alpha)^n + L(1 + c \alpha)^n}" helpFile="help\p16.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km" description="Michaelis constant"/>
+        <parameter name="n" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+        <parameter name="c" description="Equilibrium ratio"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <apply>
+              <plus/>
+              <apply>
+                <times/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+                <apply>
+                  <power/>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <divide/>
+                      <ci> ___S1___ </ci>
+                      <ci> Km </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <minus/>
+                    <ci> n </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                </apply>
+              </apply>
+              <apply>
+                <times/>
+                <ci> L </ci>
+                <ci> c </ci>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+                <apply>
+                  <power/>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <divide/>
+                      <apply>
+                        <times/>
+                        <ci> c </ci>
+                        <ci> ___S1___ </ci>
+                      </apply>
+                      <ci> Km </ci>
+                    </apply>
+                  </apply>
+                  <apply>
+                    <minus/>
+                    <ci> n </ci>
+                    <cn type="integer"> 1 </cn>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <ci> n </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> L </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <apply>
+                      <times/>
+                      <ci> c </ci>
+                      <ci> ___S1___ </ci>
+                    </apply>
+                    <ci> Km </ci>
+                  </apply>
+                </apply>
+                <ci> n </ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="iMWCi" SBOTerm="SBO:0000000" displayName="Irreversible MWC Model with Inhibition" property="Irreversible,Sigmoidal,Allosteric,Regulated,Inhibited" description="Irreversible MWC Model with Inhibition" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L*(1+___I1___/Ki)^n)" display="v = V_m \frac{S/K_m \left(1 + S/K_m\right)^{n-1}}{\left(1 + S/K_m\right)^n + L \left( 1 + I/K_i\right)^n}" helpFile="help\p17.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km" description="Michaelis constant"/>
+        <parameter name="n" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vmax </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> Km </ci>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> n </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <ci> n </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> L </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <ci> ___I1___ </ci>
+                    <ci> Ki </ci>
+                  </apply>
+                </apply>
+                <ci> n </ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="iMWCa" SBOTerm="SBO:0000000" displayName="Irreversible MWC Model with Activation" property="Irreversible,Sigmoidal,Allosteric,Regulated,Activated" description="Irreversible MWC Model with Activation" numSubstrates="1" numProducts="1" infixExpression="Vmax*___S1___/Km*(1+___S1___/Km)^(n-1)/((1+___S1___/Km)^n+L/(1+___A1___/Ka)^n)" display="v = V_m \frac{S/K_m \left(1 + S/K_m\right)^{n-1}}{\left(1 + S/K_m\right)^n + L / \left( 1 + A/K_a\right)^n}" helpFile="help\p18.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Km" description="Michaelis constant"/>
+        <parameter name="n" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+        <parameter name="Ka" description="Activation constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vmax </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> Km </ci>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> n </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km </ci>
+                </apply>
+              </apply>
+              <ci> n </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> L </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <ci> ___A1___ </ci>
+                    <ci> Ka </ci>
+                  </apply>
+                </apply>
+                <ci> n </ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rHofHill" SBOTerm="SBO:0000000" displayName="Reversible Hill Model" property="Reversible,Linear" description="Reversible Hill model, see Rohwer and Hofmeyr, Kinetic and Thermodynamic Aspects of Enzyme Control and Regulation, J. Phys. Chem. B, 2010, 114 (49), pp 16280–16289, DOI: 10.1021/jp108412s" numSubstrates="1" numProducts="1" infixExpression="Vm*((___S1___-___P1___/Keq)*(___S1___/Km1+___P1___/Km2)^(h-1))/(1+(___S1___/Km1+___P1___/Km2)^h)" display="v = V_m \frac{V_f {\displaystyle\alpha\ \left(1 - \rho\right)\ \left(\alpha + \pi\right)^{h-1}}}{\displaystyle 1 + \left(\alpha + \pi\right)^h}" helpFile="help\p19.html">
+      <listOfParameters>
+        <parameter name="Vm" description="Maximal rate"/>
+        <parameter name="Keq" description="Thermodynamic equilibrium constant"/>
+        <parameter name="Km1" description="Substrate Michaelis constant"/>
+        <parameter name="Km2" description="Product Michaelis constant"/>
+        <parameter name="h" description="Hill coefficient"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> h </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rHofHillm" SBOTerm="SBO:0000000" displayName="Reversible Hill Model with Modifier" property="Reversible,Sigmoidal,Allosteric,Regulated" description="Reversible Hill Model with Modifier" numSubstrates="1" numProducts="1" infixExpression="Vmax*((___S1___-___P1___/Keq)*(___S1___/Km1+___P1___/Km2)^(h-1))/((1+(___I1___/Ki)^h)/(1+factor*(___I1___/Ki)^h)+(___S1___/Km1+___P1___/Km2)^h)" display="v = V_m \frac{V_f {\displaystyle\alpha\ \left(1 - \rho\right)\ \left(\alpha + \pi\right)^{h-1}}}{\displaystyle\frac{1 + \mu^h}{1 + \sigma \mu^h} + \left(\alpha + \pi\right)^h}" helpFile="help\p20.html">
+      <listOfParameters>
+        <parameter name="Vmax" description="Maximal rate"/>
+        <parameter name="Keq" description="Thermodynamic equilibrium constant"/>
+        <parameter name="Km1" description="Substrate Michaelis Constant"/>
+        <parameter name="Km2" description="Product Michaelis Constant"/>
+        <parameter name="h" description="Hill coefficient"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+        <parameter name="factor" description="Modifier factor"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vmax </ci>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> h </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <divide/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <power/>
+                  <apply>
+                    <divide/>
+                    <ci> ___I1___ </ci>
+                    <ci> Ki </ci>
+                  </apply>
+                  <ci> h </ci>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <times/>
+                  <ci> factor </ci>
+                  <apply>
+                    <power/>
+                    <apply>
+                      <divide/>
+                      <ci> ___I1___ </ci>
+                      <ci> Ki </ci>
+                    </apply>
+                    <ci> h </ci>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="linlog" SBOTerm="SBO:0000000" displayName="Lin-Log Approximation" property="Irreversible,Simple" description="Lin-Log Approximation" numSubstrates="1" numProducts="1" infixExpression="v_o*(e/eo)*(1+elast1*ln(___S1___/so))" display="v = v_o \left( \frac{e}{e_o} \right) \left( 1 + \varepsilon^v_{S_1} \ln\left( \frac{S_1}{S_o} \right) \right)" helpFile="help\p21.html">
+      <listOfParameters>
+        <parameter name="v_o" description="Reaction rate at the operating point"/>
+        <parameter name="e" description="Level of enzyme concentration away from operatingpoint (if applicable)"/>
+        <parameter name="eo" description="Operating point for enzyme concentration"/>
+        <parameter name="elast1" description="Elasticity at operating point"/>
+        <parameter name="so" description="Concentation of substate at operating point"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> v_o </ci>
+          <apply>
+            <divide/>
+            <ci> e </ci>
+            <ci> eo </ci>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <times/>
+              <ci> elast1 </ci>
+              <apply>
+                <ln/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> so </ci>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immBiU" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Bi-Uni" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Bi-Uni" numSubstrates="2" numProducts="1" infixExpression="k*___S1___*___S2___" display="v = k S_1 S_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmBiU" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Bi-Uni" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Bi-Uni" numSubstrates="2" numProducts="1" infixExpression="k1*___S1___*___S2___-k2*___P1___" display="v = k_1 S_1 S_2 - k_2 P_1" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate Constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmbu" SBOTerm="SBO:0000000" displayName="Ordered Bi Uni kinetics" property="Reversible,Hyperbolic" description="Ordered Bi Uni kinetics" numSubstrates="2" numProducts="1" infixExpression="Vf*(___S1___*___S2___-___P1___/Keq)/(___S1___*___S2___+KmS1*___S2___+KmS2*___S1___+Vf/(Vr*Keq)*(KmP+___P1___*(1+___S1___/KiA)))" display="v = V_f \frac{S_1 S_2-P_1/Keq}{S_1 S_2 + K_{S_1}\ S_2 + K_{S_2}\ S_1+\frac{V_f}{V_r Keq} (K_{P_1} + P_1 (1+\frac{S_1}{KiA}))}" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vf" description="Forward maximal rate"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="KmS1" description="Km for $S_1$"/>
+        <parameter name="KmS2" description="Km for $S_2$"/>
+        <parameter name="Vr" description="Reverse maximal rate"/>
+        <parameter name="KmP" description="Km for P"/>
+        <parameter name="KiA" description="Product inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vf </ci>
+            <apply>
+              <minus/>
+              <apply>
+                <times/>
+                <ci> ___S1___ </ci>
+                <ci> ___S2___ </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci> ___S1___ </ci>
+              <ci> ___S2___ </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> KmS1 </ci>
+              <ci> ___S2___ </ci>
+            </apply>
+            <apply>
+              <times/>
+              <ci> KmS2 </ci>
+              <ci> ___S1___ </ci>
+            </apply>
+            <apply>
+              <times/>
+              <apply>
+                <divide/>
+                <ci> Vf </ci>
+                <apply>
+                  <times/>
+                  <ci> Vr </ci>
+                  <ci> Keq </ci>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <ci> KmP </ci>
+                <apply>
+                  <times/>
+                  <ci> ___P1___ </ci>
+                  <apply>
+                    <plus/>
+                    <cn type="integer"> 1 </cn>
+                    <apply>
+                      <divide/>
+                      <ci> ___S1___ </ci>
+                      <ci> KiA </ci>
+                    </apply>
+                  </apply>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immUBi" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Uni-Bi" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Uni-Bi" numSubstrates="1" numProducts="2" infixExpression="k*___S1___" display="k S_1" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmUniBi" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Uni-Bi" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Uni-Bi" numSubstrates="1" numProducts="2" infixExpression="k1*___S1___-k2*___P1___*___P2___" display="v = k_1 S_1 - k_2 P_1 P_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immBiBi" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Bi-Bi" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Bi-Bi" numSubstrates="2" numProducts="2" infixExpression="k*___S1___*___S2___" display="v = k S_1 S_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmBiBi" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Bi-Bi" property="Mass-action,Reversible,Linear" description="Reversible Mass-Action Bi-Bi" numSubstrates="2" numProducts="2" infixExpression="k1*___S1___*___S2___-k2*___P1___*___P2___" display="v = k_1 S_1 S_2 - k_2 P_1 P_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immUTri" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Uni-Tri" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Uni-Tri" numSubstrates="1" numProducts="3" infixExpression="k*___S1___" display="v = k S_1" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmUTri" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Uni-Tri" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Uni-Tri" numSubstrates="1" numProducts="3" infixExpression="k1*___S1___-k2*___P1___*___P2___*___P3___" display="v = k_1 S_1 - k_2 P_1 P_2 P_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+            <ci> ___P3___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immBiTri" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Bi-Tr" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Bi-Tri" numSubstrates="2" numProducts="3" infixExpression="k*___S1___*___S2___" display="v = k S_1 S_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmBiTri" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Bi-Tri" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Bi-Tri" numSubstrates="2" numProducts="3" infixExpression="k1*___S1___*___S2___-k2*___P1___*___P2___*___P3___" display="v = k_1 S_1 S_2 - k_2 P_1 P_2 P_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Reverse Rate Constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+            <ci> ___P3___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immTriTri" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Tri-Tri" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Tri-Tri" numSubstrates="3" numProducts="3" infixExpression="k*___S1___*___S2___*___S3___" display="v = k S_1 S_2 S_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+          <ci> ___S3___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmTriTri" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Tri-Tri" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Tri-Tri" numSubstrates="3" numProducts="3" infixExpression="k1*___S1___*___S2___*___S3___-k2*___P1___*___P2___*___P3___" display="v = k_1 S_1 S_2 S_3 - k_2 P_1 P_2 P_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+            <ci> ___S3___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+            <ci> ___P3___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immTriU" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Tri-Uni" property="Irreversible,Mass-action,Linear" description="Irreversible Mass-Action Tri-Uni" numSubstrates="3" numProducts="1" infixExpression="k*___S1___*___S2___*___S3___" display="v = k S_1 S_2 S_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+          <ci> ___S3___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmTriU" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Tri-Uni" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Tri-Uni" numSubstrates="3" numProducts="1" infixExpression="k1*___S1___*___S2___*___S3___-k2*___P1___" display="v = k_1 S_1 S_2 S_3 - k_2 P_1" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+            <ci> ___S3___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="immTriBi" SBOTerm="SBO:0000000" displayName="Irreversible Mass-Action Tri-Bi" property="Mass-action,Irreversible,Linear" description="Irreversible Mass-Action Tri-Bi" numSubstrates="3" numProducts="2" infixExpression="k*___S1___*___S2___*___S3___" display="v = k S_1 S_2 S_3" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Forward rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <ci> ___S1___ </ci>
+          <ci> ___S2___ </ci>
+          <ci> ___S3___ </ci>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmTriBi" SBOTerm="SBO:0000000" displayName="Reversible Mass-Action Tri-Bi" property="Reversible,Mass-action,Linear" description="Reversible Mass-Action Tri-Bi" numSubstrates="3" numProducts="2" infixExpression="k1*___S1___*___S2___*___S3___-k2*___P1___*___P2___" display="v = k_1 S_1 S_2 S_3 - k_2 P_1 P_2" helpFile="help\noHelp.htm">
+      <listOfParameters>
+        <parameter name="k1" description="Forward rate constant"/>
+        <parameter name="k2" description="Reverse rate constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <minus/>
+          <apply>
+            <times/>
+            <ci> k1 </ci>
+            <ci> ___S1___ </ci>
+            <ci> ___S2___ </ci>
+            <ci> ___S3___ </ci>
+          </apply>
+          <apply>
+            <times/>
+            <ci> k2 </ci>
+            <ci> ___P1___ </ci>
+            <ci> ___P2___ </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="linearElast" SBOTerm="SBO00000000" displayName="Linear Model using Elasticities" property="Simple,Linear,Reversible" description="Linear model using elasticities" numSubstrates="1" numProducts="1" infixExpression="vo*(1+eps*(___S1___-so)/so)" display="v = v_o\left( 1 + \varepsilon^v_{s_o} \frac{S_1 - s_o}{s_o} \right)" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="vo" description="Reaction rate at the operating point"/>
+        <parameter name="eps" description="Elasticity at the operating point"/>
+        <parameter name="so" description="Substate concentration at the operating point"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> vo </ci>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> eps </ci>
+                <apply>
+                  <minus/>
+                  <ci> ___S1___ </ci>
+                  <ci> so </ci>
+                </apply>
+              </apply>
+              <ci> so </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="powerLaw" SBOTerm="SBO00000000" displayName="Power Law" property="Simple,Irreversible" description="Power law" numSubstrates="1" numProducts="1" infixExpression="k*___S1___^e" display="v = k S^{\varepsilon^v_S}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="k" description="Rate constant"/>
+        <parameter name="e" description="Elasticity coefficient of reaction rate with respect to species concentration"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <times/>
+          <ci> k </ci>
+          <apply>
+            <power/>
+            <ci> ___S1___ </ci>
+            <ci> e </ci>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmc" SBOTerm="SBO00000000" displayName="Reversible Competitive Inhibition" property="Hyperbolic,Inhibited,Regulated,Reversible" description="Reversible competitive inhibition" numSubstrates="1" numProducts="1" infixExpression="(Vf*___S1___/Km1-Vr*___P1___/Km2)/(1+___S1___/Km1+___P1___/Km2+___I1___/Ki)" display="v = \frac{V_r \frac{S_1}{Km_1} - V_r \frac{P_1}{Km_2}}{1 + \frac{S_1}{Km_1} + \frac{P_1}{Km_2} + \frac{I_1}{K_i}}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vf" description="none"/>
+        <parameter name="Km1" description="none"/>
+        <parameter name="Vr" description="none"/>
+        <parameter name="Km2" description="none"/>
+        <parameter name="Ki" description="none"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <minus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vf </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vr </ci>
+                <ci> ___P1___ </ci>
+              </apply>
+              <ci> Km2 </ci>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P1___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___I1___ </ci>
+              <ci> Ki </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rmmnc" SBOTerm="SBO00000000" displayName="Reversible Uncompetitive Rate Law" property="Reversible,Inhibited,Regulated" description="Reversible uncompetitive rate law" numSubstrates="1" numProducts="1" infixExpression="(Vf*___S1___/Km1-Vr*___P1___/Km2)/(1+(___S1___/Km1+___P1___/Km2)*(1+___I1___/Ki))" display="v = \frac{V_r \frac{S_1}{Km_1} - V_r \frac{P_1}{Km_2}}{1 + \left(\frac{S_1}{Km_1} + \frac{P_1}{Km_2}\right)\left(1 + \frac{I_1}{K_i}\right)}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vf" description="Maximal forward rate"/>
+        <parameter name="Km1" description="Km for substrate, $S_1$"/>
+        <parameter name="Vr" description="Maximal reverse rate"/>
+        <parameter name="Km2" description="Km for product, $P_1$"/>
+        <parameter name="Ki" description="Uncompetitive inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <minus/>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vf </ci>
+                <ci> ___S1___ </ci>
+              </apply>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> Vr </ci>
+                <ci> ___P1___ </ci>
+              </apply>
+              <ci> Km2 </ci>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <times/>
+              <apply>
+                <plus/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___I1___ </ci>
+                  <ci> Ki </ci>
+                </apply>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rMWCs" SBOTerm="SBO00000000" displayName="Reversible MWC Model" property="Reversible,Sigmoidal" description="Simplifed reversible MWC model" numSubstrates="1" numProducts="1" infixExpression="Vm*((___S1___-___P1___/Keq)*(1+___S1___/Km1+___P1___/Km2)^(h-1))/(L+(1+___S1___/Km1+___P1___/Km2)^h)" display="v = V_m \frac{V_f {\displaystyle\alpha\ \left(1 - \rho\right)\ \left(1 + \alpha + \pi\right)^{h-1}}}{\displaystyle L + \left(1 + \alpha + \pi\right)^h}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vm" description="Maximal reaction rate"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="Km1" description="Substrate Km"/>
+        <parameter name="Km2" description="Product Km"/>
+        <parameter name="h" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> h </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <ci> L </ci>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rMWCi" SBOTerm="SBO00000000" displayName="Reversible MWC with Inhibitor" property="Reversible,Inhibited,Regulated,Allosteric,Sigmoidal" description="Simplified reversible MWC model with inhibitor" numSubstrates="1" numProducts="1" infixExpression="Vm*((___S1___-___P1___/Keq)*(1+___S1___/Km1+___P1___/Km2)^(h-1))/(L*(1+___I1___/Ki)^h+(1+___S1___/Km1+___P1___/Km2)^h)" display="v = V_m \frac{V_f {\displaystyle\alpha\ \left(1 - \rho\right)\ \left(1 + \alpha + \pi\right)^{h-1}}}{\displaystyle L \left( 1 + I/K_i\right)^n + \left(1 + \alpha + \pi\right)^h}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vm" description="Maximal reaction rate"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="Km1" description="Substrate Km"/>
+        <parameter name="Km2" description="Product Km"/>
+        <parameter name="h" description="Hill coefficient"/>
+        <parameter name="L" description="Allosteric constant"/>
+        <parameter name="Ki" description="Inhibition constant"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <minus/>
+              <ci> ___S1___ </ci>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <apply>
+                <minus/>
+                <ci> h </ci>
+                <cn type="integer"> 1 </cn>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <apply>
+              <times/>
+              <ci> L </ci>
+              <apply>
+                <power/>
+                <apply>
+                  <plus/>
+                  <cn type="integer"> 1 </cn>
+                  <apply>
+                    <divide/>
+                    <ci> ___I1___ </ci>
+                    <ci> Ki </ci>
+                  </apply>
+                </apply>
+                <ci> h </ci>
+              </apply>
+            </apply>
+            <apply>
+              <power/>
+              <apply>
+                <plus/>
+                <cn type="integer"> 1 </cn>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <ci> Km1 </ci>
+                </apply>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <ci> Km2 </ci>
+                </apply>
+              </apply>
+              <ci> h </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rROBiUni" SBOTerm="SBO00000000" displayName="Random order Bi-Uni" property="Reversible,Hyperbolic" description="Random order Bi-Uni reaction" numSubstrates="1" numProducts="1" infixExpression="Vm*(___S1___/Km1)*(___S2___/Km2)*(1-(___P1___/(___S1___*___S2___))/Keq)/(1+___S1___/Km1+___S2___/Km2+___S1___*___S2___/(Km1*Km2)+___P1___/Km3)" display="v = V_m\ \frac{\alpha_1 \alpha_2 (1 - \rho)}{1 + \alpha_1 + \alpha_2  + \alpha_1 \alpha_2 + \pi}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vm" description="Mximla reaction rate"/>
+        <parameter name="Km1" description="Substrate 1 Km"/>
+        <parameter name="Km2" description="Substrate 2 Km"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="Km3" description="Product Km"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___S2___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+            <apply>
+              <minus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <apply>
+                  <divide/>
+                  <ci> ___P1___ </ci>
+                  <apply>
+                    <times/>
+                    <ci> ___S1___ </ci>
+                    <ci> ___S2___ </ci>
+                  </apply>
+                </apply>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___S2___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> ___S1___ </ci>
+                <ci> ___S2___ </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> Km1 </ci>
+                <ci> Km2 </ci>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P1___ </ci>
+              <ci> Km3 </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rROUniBi" SBOTerm="SBO00000000" displayName="Random Order Uni-Bi" property="Reversible,Hyperbolic" description="Random Order UniBi" numSubstrates="1" numProducts="1" infixExpression="Vm*(___S1___/Km1)*(1-(___S1___/(___P1___*___P2___))/Keq)/(1+___S1___/Km1+___P1___/Km2+___P1___*___P2___/(Km2*Km3)+___P2___/Km3)" display="v = V_m\ \frac{\alpha (1 - \rho)}{1 + \alpha_1 + \pi_1 + \pi_2 + \pi_1 \pi_2}" helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vm" description="Maximal reaction rate"/>
+        <parameter name="Km1" description="Substrate Km"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="Km2" description="Product 1 Km"/>
+        <parameter name="Km3" description="Product 2 Km"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <minus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <apply>
+                  <divide/>
+                  <ci> ___S1___ </ci>
+                  <apply>
+                    <times/>
+                    <ci> ___P1___ </ci>
+                    <ci> ___P2___ </ci>
+                  </apply>
+                </apply>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <plus/>
+            <cn type="integer"> 1 </cn>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P1___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <apply>
+                <times/>
+                <ci> ___P1___ </ci>
+                <ci> ___P2___ </ci>
+              </apply>
+              <apply>
+                <times/>
+                <ci> Km2 </ci>
+                <ci> Km3 </ci>
+              </apply>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___P2___ </ci>
+              <ci> Km3 </ci>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+    <law id="rROBiBi" SBOTerm="SBO00000000" displayName="Random Order Bi-Bi" property="Reversible,Hyperbolic" description="Random order Bi-Bi" numSubstrates="1" numProducts="1" infixExpression="Vm*(___S1___/Km1)*(___S1___/Km2)*(1-(___P1___*___P2___/(___S1___*___S2___)/Keq))/((1+___S1___/Km1+___P2___/Km4)*(1+___S2___/Km2+___P1___/Km3))" display="v = V_m\ \frac{\alpha_1 \alpha_2 (1 - \rho)}{(1 + \alpha_1 + \pi_2) (1 + \alpha2 + \pi_1) } " helpFile="help/noHelp.htm">
+      <listOfParameters>
+        <parameter name="Vm" description="Maximal reaction rate"/>
+        <parameter name="Km1" description="Substate 1 Km"/>
+        <parameter name="Km2" description="Substate 2 Km"/>
+        <parameter name="Keq" description="Equilibrium constant"/>
+        <parameter name="Km4" description="Product 1 Km"/>
+        <parameter name="Km3" description="Product 2 Km"/>
+      </listOfParameters>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <apply>
+          <divide/>
+          <apply>
+            <times/>
+            <ci> Vm </ci>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km1 </ci>
+            </apply>
+            <apply>
+              <divide/>
+              <ci> ___S1___ </ci>
+              <ci> Km2 </ci>
+            </apply>
+            <apply>
+              <minus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <apply>
+                  <divide/>
+                  <apply>
+                    <times/>
+                    <ci> ___P1___ </ci>
+                    <ci> ___P2___ </ci>
+                  </apply>
+                  <apply>
+                    <times/>
+                    <ci> ___S1___ </ci>
+                    <ci> ___S2___ </ci>
+                  </apply>
+                </apply>
+                <ci> Keq </ci>
+              </apply>
+            </apply>
+          </apply>
+          <apply>
+            <times/>
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <ci> ___S1___ </ci>
+                <ci> Km1 </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <ci> ___P2___ </ci>
+                <ci> Km4 </ci>
+              </apply>
+            </apply>
+            <apply>
+              <plus/>
+              <cn type="integer"> 1 </cn>
+              <apply>
+                <divide/>
+                <ci> ___S2___ </ci>
+                <ci> Km2 </ci>
+              </apply>
+              <apply>
+                <divide/>
+                <ci> ___P1___ </ci>
+                <ci> Km3 </ci>
+              </apply>
+            </apply>
+          </apply>
+        </apply>
+      </math>
+    </law>
+  </listOfRateLaws>
+</rateml>
