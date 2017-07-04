@@ -13,7 +13,7 @@ def get_readme():
     return readme
 
 setup(
-    name='spyder.ratelaw',
+    name='spyder_ratelaw',
     version='1.0.0',
     packages=['spyder_ratelaw', 'spyder_ratelaw.widgets', 'spyder_ratelaw.images'],
     package_data={'spyder_ratelaw.widgets': ['ratelaw2_0_3.xml'],
